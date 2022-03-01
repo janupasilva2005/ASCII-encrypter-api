@@ -1,12 +1,14 @@
 const express = require("express");
 const data = require("../data/ascii");
+const check = require("../helpers/validByte");
+const messages = require("../data/output");
 
 const Route = express.Router();
 
 Route.use(express.json());
 
 Route.get("/", (req, res) => {
-  res.json({ msg: "connected" });
+  res.json({ msg: messages.connected });
 });
 
 Route.post("/decryptOne", (req, res) => {
@@ -15,35 +17,74 @@ Route.post("/decryptOne", (req, res) => {
   /**
    * If the code is not given
    */
-  !code ? res.json({ error: "Please supply the code" }) : "";
+  !code ? res.json({ error: messages.empty }) : "";
 
   /**
    * Binary code must be 7 characters
    */
   if (code.length !== 7) {
-    res.json({ error: "Code must be atleast 7 digits" });
+    res.json({ error: messages.length });
   } else {
-    /**
-     * Converting binary to decimal
-     */
-    var decimalNumber = parseInt(code, 2).toString();
+    if (check(code) === 0) {
+      /**
+       * Converting binary to decimal
+       */
+      var decimalNumber = parseInt(code, 2).toString();
 
-    /**
-     * If the decimal number is 2 characters adding 0 to the beginning
-     */
-    if (decimalNumber.length == 2) {
-      decimalNumber = "0" + decimalNumber;
+      /**
+       * If the decimal number is 2 characters adding 0 to the beginning
+       */
+      if (decimalNumber.length == 2) {
+        decimalNumber = "0" + decimalNumber;
+      }
+
+      /**
+       * Finding the exact character by looping through the data array
+       */
+      const result = data.find(({ decimal }) => decimal === decimalNumber);
+
+      if (result) {
+        res.json({ character: result.char });
+      } else {
+        res.json({ message: messages.notFound });
+      }
+    } else {
+      res.json({ error: messages.invalid });
+    }
+  }
+});
+
+Route.post("/decrypt", (req, res) => {
+  const { code } = req.body;
+
+  !code ? res.json({ error: messages.empty }) : "";
+
+  if (code.length < 7) {
+    res.json({ error: messages.length });
+  } else {
+    // This stores all binary codes with each 7 digits
+    var singleCodes = [];
+
+    // Spliting the binary
+    for (var i = 0, charsLength = code.length; i < charsLength; i += 7) {
+      singleCodes.push(code.substring(i, i + 7));
     }
 
-    /**
-     * Finding the exact character by looping through the data array
-     */
-    const result = data.find(({ decimal }) => decimal === decimalNumber);
+    let falseDigitCount = 0;
 
-    if (result) {
-      res.json({ character: result.char });
+    /**
+     * Check whether every binary code contains 7 digits
+     */
+    for (var i = 0; i < singleCodes.length; i++) {
+      if (singleCodes[i].length < 7) {
+        falseDigitCount++;
+      }
+    }
+
+    if (falseDigitCount >= 1) {
+      res.json({ error: messages.length });
     } else {
-      res.json({ message: "Character not found" });
+      res.json({ msg: "Nice" });
     }
   }
 });
