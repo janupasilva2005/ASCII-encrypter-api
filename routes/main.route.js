@@ -141,4 +141,38 @@ Route.post("/decrypt", (req, res) => {
   }
 });
 
+Route.post("/encrypt", (req, res) => {
+  const { msg } = req.body;
+
+  if (msg && msg.length >= 1) {
+    const charArray = msg.split("");
+
+    var binaryString = "";
+    var invalidChar = 0;
+
+    charArray.forEach((character) => {
+      const result = data.find(({ char }) => char === character);
+
+      if (result) {
+        let toPush = parseInt(result.decimal).toString(2);
+        if (toPush.length === 6) {
+          toPush = "0" + toPush;
+        }
+
+        binaryString += toPush;
+      } else {
+        invalidChar = 1;
+      }
+    });
+
+    invalidChar === 1 ? res.json({ error: messages.notFound }) : "";
+
+    if (binaryString) {
+      res.json({ data: binaryString });
+    }
+  } else {
+    res.json({ error: messages.empty });
+  }
+});
+
 module.exports = Route;

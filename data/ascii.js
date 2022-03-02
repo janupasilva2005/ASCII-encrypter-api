@@ -85,6 +85,23 @@ const data = [
   { decimal: "044", char: "," },
   { decimal: "045", char: "-" },
   { decimal: "046", char: "." },
+  { decimal: "047", char: "/" },
+  { decimal: "058", char: ":" },
+  { decimal: "059", char: ";" },
+  { decimal: "060", char: "<" },
+  { decimal: "061", char: "=" },
+  { decimal: "062", char: ">" },
+  { decimal: "063", char: "?" },
+  { decimal: "064", char: "@" },
+  { decimal: "091", char: "[" },
+  { decimal: "093", char: "]" },
+  { decimal: "094", char: "^" },
+  { decimal: "095", char: "_" },
+  { decimal: "096", char: "`" },
+  { decimal: "123", char: "{" },
+  { decimal: "124", char: "|" },
+  { decimal: "125", char: "}" },
+  { decimal: "126", char: "~" },
 ];
 
 module.exports = data;
