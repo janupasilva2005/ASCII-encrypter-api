@@ -63,11 +63,11 @@ Route.post("/decrypt", (req, res) => {
     res.json({ error: messages.length });
   } else {
     // This stores all binary codes with each 7 digits
-    var singleCodes = [];
+    var singleDigits = [];
 
     // Spliting the binary
     for (var i = 0, charsLength = code.length; i < charsLength; i += 7) {
-      singleCodes.push(code.substring(i, i + 7));
+      singleDigits.push(code.substring(i, i + 7));
     }
 
     let falseDigitCount = 0;
@@ -75,16 +75,68 @@ Route.post("/decrypt", (req, res) => {
     /**
      * Check whether every binary code contains 7 digits
      */
-    for (var i = 0; i < singleCodes.length; i++) {
-      if (singleCodes[i].length < 7) {
+    for (var i = 0; i < singleDigits.length; i++) {
+      if (singleDigits[i].length < 7) {
         falseDigitCount++;
       }
     }
 
+    /**
+     * If there are any false digit counts return error
+     */
     if (falseDigitCount >= 1) {
       res.json({ error: messages.length });
     } else {
-      res.json({ msg: "Nice" });
+      // Digits cannot contain characters except 1s and 0s
+      let invalidDigitCount = 0;
+
+      /**
+       * Checking each digit for invalid characters
+       */
+      singleDigits.forEach((digit) => {
+        check(digit) === 0 ? "" : invalidDigitCount++;
+      });
+
+      if (invalidDigitCount != 0) {
+        res.json({ error: messages.invalid });
+      } else {
+        /**
+         * Final output decoded string
+         */
+        let outString = "";
+
+        /**
+         * Mapping the binaries and creating decimals
+         */
+        const decimalValues = singleDigits.map((digit) => {
+          return parseInt(digit, 2).toString();
+        });
+
+        /**
+         * Filtering each decimal to 3 digit decimal
+         */
+        const filteredDecimals = decimalValues.map((value) => {
+          if (value.length == 2) {
+            return "0" + value;
+          } else {
+            return value;
+          }
+        });
+
+        /**
+         * Final function
+         */
+        filteredDecimals.forEach((value) => {
+          var result = data.find(({ decimal }) => decimal === value);
+          if (result) {
+            outString += result.char;
+          } else {
+            outString += "404";
+          }
+        });
+
+        res.json({ data: { result: outString } });
+      }
     }
   }
 });

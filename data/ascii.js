@@ -1,4 +1,8 @@
 const data = [
+  // Space
+  { decimal: "032", char: " " },
+
+  // Simple Alphabet Letters
   { decimal: "097", char: "a" },
   { decimal: "098", char: "b" },
   { decimal: "099", char: "c" },
@@ -25,6 +29,46 @@ const data = [
   { decimal: "120", char: "x" },
   { decimal: "121", char: "y" },
   { decimal: "122", char: "z" },
+
+  // Capital Alphabet Letters
+  { decimal: "065", char: "A" },
+  { decimal: "066", char: "B" },
+  { decimal: "067", char: "C" },
+  { decimal: "068", char: "D" },
+  { decimal: "069", char: "E" },
+  { decimal: "070", char: "F" },
+  { decimal: "071", char: "G" },
+  { decimal: "072", char: "H" },
+  { decimal: "073", char: "I" },
+  { decimal: "074", char: "J" },
+  { decimal: "075", char: "K" },
+  { decimal: "076", char: "L" },
+  { decimal: "077", char: "M" },
+  { decimal: "078", char: "N" },
+  { decimal: "079", char: "O" },
+  { decimal: "080", char: "P" },
+  { decimal: "081", char: "Q" },
+  { decimal: "082", char: "R" },
+  { decimal: "083", char: "S" },
+  { decimal: "084", char: "T" },
+  { decimal: "085", char: "U" },
+  { decimal: "086", char: "V" },
+  { decimal: "087", char: "W" },
+  { decimal: "088", char: "X" },
+  { decimal: "089", char: "Y" },
+  { decimal: "090", char: "Z" },
+
+  // Numbers
+  { decimal: "048", char: "0" },
+  { decimal: "049", char: "1" },
+  { decimal: "050", char: "2" },
+  { decimal: "051", char: "3" },
+  { decimal: "052", char: "4" },
+  { decimal: "053", char: "5" },
+  { decimal: "054", char: "6" },
+  { decimal: "055", char: "7" },
+  { decimal: "056", char: "8" },
+  { decimal: "057", char: "9" },
 ];
 
 module.exports = data;
